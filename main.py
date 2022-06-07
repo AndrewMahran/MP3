@@ -10,7 +10,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def getvalue():
     url = request.form['url']
     video_info = youtube_dl.YoutubeDL().extract_info(url=url,download=False)
