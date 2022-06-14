@@ -1,48 +1,58 @@
-
-
 <!DOCTYPE html>
 <html>
-    <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    <body>
-    <?php 
-        //$sql = "SELECT id FROM `clicker.clicks` WHERE id=( SELECT MAX(id) FROM clicks )";
-        //$result = mysqli_query($con, $sql);
-        //$id = mysqli_num_rows($result);
-        //$sql = "SELECT username FROM `clicker.clicks` WHERE id=( SELECT MAX(id) FROM clicks )";
-        //$result = mysqli_query($con, $sql);
-        //$username = mysqli_num_rows($result);
-        ?>
-        <h1>
-            <center>
-                Clicker
-            </center>
-        </h1>
-        <h2>
-            <center>
-                Click till your heart desire
-            </center>
-        </h2>
-        <form action="includes/insert.inc.php" method="POST">
-            <h4 id="output"><?php
-            //$id
-        ?><?php
-        //$username
-    ?> has the last click</h4>
-            <input type="text" name="username" placeholder="username">
-            <button type="submit" name="submit">+1</button>
-        </form>
-            <button onclick=addPoints()>+1</button>
-        <h4></h4>
-    </body>
-</html>
-<script>
-    var points = 0;
 
-    document.getElementById('output').innerHTML = points;
-    function addPoints() {
-        points = points + 1;
-        document.getElementById('output').innerHTML = points;
+<head>
+    <?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "Database#1";
+    $db = "clicker";
+    $id = 0;
+
+    $conn = mysqli_connect($servername, $username, $password);
+
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
+
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        //echo "Connected Successfully";
+
+        $sql = "SELECT id, username FROM `clicks` WHERE id=( SELECT MAX(id) FROM clicks );";
+        //$sql = "SELECT * FROM clicker.clicks";
+        $id = $conn->query($sql);
+    } catch (PDOException $e) {
+        echo "Connection Failed: " . $e->getMessage();
     }
-</script>
+    ?>
+
+    <link rel="stylesheet" href="style.css">
+    <title>Clicker</title>
+</head>
+
+<body>
+    <h1 id="head">
+        Clicker
+    </h1>
+    <h2 id="head">
+        Click till your heart desire
+    </h2>
+    <form action="includes/insert.inc.php" method="POST">
+        <p name="text" style="color: red;">
+                <?php
+            foreach ($id as $row) {
+                echo "<h4 style='font-size: 600%;'>" . $row['id'] . "</h4>";
+                echo "<h4>" . $row['username'] . " has the last click. Thank you "  . $row['username'] . "!</h4>";
+            }
+            ?>
+        </p>
+        <center>
+            <button class="button">Add 1</button>
+        </center>
+
+        <input type="text" name="username" placeholder="username">
+    </form>
+    <p style="text-align:right; padding-bottom: 1.5%;" id="me">Made by Andrew Mahran</p>
+    <p id="me">DM me with feedback @itsandrewmahran</p>
+</body>
+
+</html>
