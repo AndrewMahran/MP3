@@ -1,12 +1,14 @@
-<?php 
-define('$DB_HOST', 'localhost'); 
-define('$DB_NAME', 'clicker'); 
-define('$DB_USER','root'); 
-define('$DB_PASSWORD',''); 
-$con=mysqli_connect($DB_HOST, $DB_USER, $DB_PASSWORD) or error_log("Failed to connect to MySQL: "); 
-$db=mysqli_select_db($DB_NAME,$con) or die("Failed to connect to database: "); 
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "Database#1";
+$db = "clicker";
 
-header("Location: ../index.php?sucess=true");
+$conn = mysqli_connect($servername, $username, $password);
 
-mysqli_close($conn);
-
+if ($conn->connect_error) {
+    die("Connection Failed: " . $conn->connect_error);
+}
+else {
+    echo "Connected Successfully";
+}
